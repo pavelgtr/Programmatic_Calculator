@@ -2,19 +2,22 @@
 import UIKit
 
 class CalculatorView: UIViewController {
+
+    //MARK: - declare variables
     
-    let mainStackView = UIStackView()
+    let displayLabel = UILabel() //displays calculator result
+    let  labelContainer = UIView() //UIView for result
     
-    let displayLabel = UILabel()
-    
+    //declare Stack views
     let topStackView = UIStackView()
     let secondStackView = UIStackView()
     let thirdStackView = UIStackView()
     let fourthStackView = UIStackView()
     let bottomStackView = UIStackView()
-    let bottomLeft = UIStackView()
-    let bottomRight = UIStackView()
+    let smallBottomLeft = UIStackView()
+    let smallBottomRight = UIStackView()
     
+    //declare buttons
     let buttonClear = UIButton()
     let buttonNegativePostive = UIButton()
     let buttonPercent = UIButton()
@@ -39,30 +42,26 @@ class CalculatorView: UIViewController {
     let buttonPeriod = UIButton()
     let buttonEqual = UIButton()
     
-    let multiplierDistance = 0.14
+    //declare button size
+    let buttonSize = 0.14
     
-    let  labelContainer = UIView()
+    //declare button colors
+    let Orangecolor = UIColor(red: 1.00, green: 0.58, blue: 0.00, alpha: 1.00)
+    let bluecolor = UIColor(red: 0.20, green: 0.60, blue: 0.86, alpha: 1.00)
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        groupStackConfiguration()
+        //configure buttons
+        groupButtons()
         
-        
-        configureBottomStackView()
-        createAndConfigureStackView(stackView: fourthStackView, bottomAnchor: bottomStackView.topAnchor, bottomConstant: -1, heightMultiplier: multiplierDistance)
-        createAndConfigureStackView(stackView: thirdStackView, bottomAnchor: fourthStackView.topAnchor, bottomConstant: -1, heightMultiplier: multiplierDistance)
-        createAndConfigureStackView(stackView: secondStackView, bottomAnchor: thirdStackView.topAnchor, bottomConstant: -1, heightMultiplier: multiplierDistance)
-        createAndConfigureStackView(stackView: topStackView, bottomAnchor: secondStackView.topAnchor, bottomConstant: -1, heightMultiplier: multiplierDistance)
- 
-        configureButtons()
-     
-        configureYellowButtons()
-        
-        configureBlueButtons()
-        
+        //configure label container and display 
         configurelabelContainer()
         configureDisplayLabel()
     }
+    
+    //MARK: - results display configuration
     
     func configurelabelContainer() {
         view.addSubview(labelContainer)
@@ -93,56 +92,45 @@ class CalculatorView: UIViewController {
         displayLabel.textAlignment = .right
     }
     
-    func configureButton(_ button: UIButton, title: String, stackView: UIStackView) {
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .white
-        button.setTitle(title, for: .normal)
-        button.setTitleColor(.black, for: .normal)
-        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
-        button.titleLabel?.textAlignment = .center
-        button.layer.masksToBounds = true
-        button.layer.cornerRadius = 30
-        stackView.addArrangedSubview(button)
+
+    //MARK: - Stacks configuration
+    
+    func groupStackConfiguration() {
+        configureBottomStackView() //bottom stack view is slight different than the others, hence unique configuration func
+        //configure rest of stack views
+        createStackViews(stackView: fourthStackView, bottomAnchor: bottomStackView.topAnchor, bottomConstant: -1, heightMultiplier: buttonSize)
+        createStackViews(stackView: thirdStackView, bottomAnchor: fourthStackView.topAnchor, bottomConstant: -1, heightMultiplier: buttonSize)
+        createStackViews(stackView: secondStackView, bottomAnchor: thirdStackView.topAnchor, bottomConstant: -1, heightMultiplier: buttonSize)
+        createStackViews(stackView: topStackView, bottomAnchor: secondStackView.topAnchor, bottomConstant: -1, heightMultiplier: buttonSize)
     }
     
-    func configureTopStackView() {
-        topStackView.backgroundColor = .clear
-        view.addSubview(topStackView)
-        topStackView.translatesAutoresizingMaskIntoConstraints = false
-        topStackView.axis = .horizontal
-        topStackView.alignment = .fill
-        topStackView.distribution = .fillEqually
-        topStackView.spacing = 1
+    func configureBottomStackView() { //this stack has unique configuration compared to the rest (ie func createStackViews() )
+        view.addSubview(bottomStackView)
+        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
+        bottomStackView.axis = .horizontal
+        bottomStackView.alignment = .fill
+        bottomStackView.distribution = .fillEqually
+        bottomStackView.spacing = 4
         
-        mainStackView.addArrangedSubview(topStackView)
+        bottomStackView.addArrangedSubview(smallBottomLeft)
+        bottomStackView.addArrangedSubview(smallBottomRight)
         
+        smallBottomRight.axis = .horizontal
+        smallBottomRight.distribution = .fillEqually
+        smallBottomRight.alignment = .fill
+        smallBottomRight.spacing = 1
         
         NSLayoutConstraint.activate([
-            topStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            topStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            topStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: multiplierDistance)
+//            bottomStackView.topAnchor.constraint(equalTo: fourthStackView.bottomAnchor, constant: 5),
+            bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            bottomStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: buttonSize),
+            bottomStackView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor, multiplier: 0)
         ])
     }
     
-    func configureSecondStackView() {
-        secondStackView.backgroundColor = .clear
-        view.addSubview(secondStackView)
-        secondStackView.translatesAutoresizingMaskIntoConstraints = false
-        secondStackView.axis = .horizontal
-        secondStackView.alignment = .fill
-        secondStackView.distribution = .fillEqually
-        secondStackView.spacing = 1
-        
-        
-        NSLayoutConstraint.activate([
-            secondStackView.topAnchor.constraint(equalTo: topStackView.bottomAnchor, constant: 5),
-            secondStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            secondStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            secondStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: multiplierDistance)
-        ])
-    }
-    
-    func createAndConfigureStackView(stackView: UIStackView, bottomAnchor: NSLayoutYAxisAnchor, bottomConstant: CGFloat, heightMultiplier: CGFloat) {
+    //create and configure the rest of the stacks
+    func createStackViews(stackView: UIStackView, bottomAnchor: NSLayoutYAxisAnchor, bottomConstant: CGFloat, heightMultiplier: CGFloat) {
         stackView.backgroundColor = .clear
         stackView.axis = .horizontal
         stackView.alignment = .fill
@@ -159,88 +147,46 @@ class CalculatorView: UIViewController {
         ])
     }
     
-    func configureBottomStackView() {
-        view.addSubview(bottomStackView)
-        bottomStackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomStackView.axis = .horizontal
-        bottomStackView.alignment = .fill
-        bottomStackView.distribution = .fillEqually
-        bottomStackView.spacing = 4
-        
-        bottomStackView.addArrangedSubview(bottomLeft)
-        bottomStackView.addArrangedSubview(bottomRight)
-        
-        bottomRight.axis = .horizontal
-        bottomRight.distribution = .fillEqually
-        bottomRight.alignment = .fill
-        bottomRight.spacing = 1
-        
-        
-        configureButton(buttonZero, title: "0", stackView: bottomLeft)
-        configureButton(buttonPeriod, title: ".", stackView: bottomRight)
-        configureButton(buttonEqual, title: "=", stackView: bottomRight)
-        
-        NSLayoutConstraint.activate([
-//            bottomStackView.topAnchor.constraint(equalTo: fourthStackView.bottomAnchor, constant: 5),
-            bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            bottomStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: multiplierDistance),
-            bottomStackView.bottomAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.bottomAnchor, multiplier: 0)
-        ])
-        
+    
+   //MARK: - button configuration
+    
+    func configureButton(_ button: UIButton, title: String, stackView: UIStackView, buttonColor: UIColor) {
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle(title, for: .normal)
+        button.setTitleColor(.black, for: .normal)
+        button.titleLabel?.font = .boldSystemFont(ofSize: 20)
+        button.titleLabel?.textAlignment = .center
+        button.layer.masksToBounds = true
+        button.layer.cornerRadius = 30
+        button.backgroundColor = buttonColor
+        stackView.addArrangedSubview(button)
     }
     
-    
-    func configureButtons() {
-        configureButton(buttonTwo, title: "2", stackView: fourthStackView)
-        configureButton(buttonThree, title: "3", stackView: fourthStackView)
-        configureButton(buttonOne, title: "1", stackView: fourthStackView)
-        configureButton(buttonPlus, title: "+", stackView: fourthStackView)
-                
-        configureButton(buttonFour, title: "4", stackView: thirdStackView)
-        configureButton(buttonFive, title: "5", stackView: thirdStackView)
-        configureButton(buttonSix, title: "6", stackView: thirdStackView)
-        configureButton(buttonMinus, title: "-", stackView: thirdStackView)
+    func groupButtons() {
+        configureButton(buttonTwo, title: "2", stackView: fourthStackView, buttonColor: bluecolor)
+        configureButton(buttonThree, title: "3", stackView: fourthStackView, buttonColor: bluecolor)
+        configureButton(buttonOne, title: "1", stackView: fourthStackView, buttonColor: bluecolor)
+        configureButton(buttonPlus, title: "+", stackView: fourthStackView, buttonColor: Orangecolor)
         
-        configureButton(buttonClear, title: "A/C", stackView: topStackView)
-        configureButton(buttonNegativePostive, title: "%", stackView: topStackView)
-        configureButton(buttonPercent, title: "+/-", stackView: topStackView)
-        configureButton(buttonDivision, title: "÷", stackView: topStackView)
+        configureButton(buttonFour, title: "4", stackView: thirdStackView, buttonColor: bluecolor)
+        configureButton(buttonFive, title: "5", stackView: thirdStackView, buttonColor: bluecolor)
+        configureButton(buttonSix, title: "6", stackView: thirdStackView, buttonColor: bluecolor)
+        configureButton(buttonMinus, title: "-", stackView: thirdStackView, buttonColor: Orangecolor)
         
-        configureButton(buttonSeven, title: "7", stackView: secondStackView)
-        configureButton(buttonEight, title: "8", stackView: secondStackView)
-        configureButton(buttonNine, title: "9", stackView: secondStackView)
-        configureButton(buttonMultiply, title: "x", stackView: secondStackView)
+        configureButton(buttonClear, title: "A/C", stackView: topStackView, buttonColor: .white)
+        configureButton(buttonNegativePostive, title: "%", stackView: topStackView, buttonColor: .white)
+        configureButton(buttonPercent, title: "+/-", stackView: topStackView, buttonColor: .white)
+        configureButton(buttonDivision, title: "÷", stackView: topStackView, buttonColor: Orangecolor)
+        
+        configureButton(buttonSeven, title: "7", stackView: secondStackView, buttonColor: bluecolor)
+        configureButton(buttonEight, title: "8", stackView: secondStackView, buttonColor: bluecolor)
+        configureButton(buttonNine, title: "9", stackView: secondStackView, buttonColor: bluecolor)
+        configureButton(buttonMultiply, title: "x", stackView: secondStackView, buttonColor: Orangecolor)
+        
+        configureButton(buttonZero, title: "0", stackView: smallBottomLeft, buttonColor: bluecolor)
+        configureButton(buttonPeriod, title: ".", stackView: smallBottomRight, buttonColor: bluecolor)
+        configureButton(buttonEqual, title: "=", stackView: smallBottomRight, buttonColor: Orangecolor)
     }
-    
-    func configureYellowButtons() {
-        
-        let yellowcolor = UIColor(red: 1.00, green: 0.58, blue: 0.00, alpha: 1.00)
-        
-        buttonDivision.backgroundColor = yellowcolor
-        buttonMinus.backgroundColor = yellowcolor
-        buttonMultiply.backgroundColor = yellowcolor
-        buttonEqual.backgroundColor = yellowcolor
-        buttonPlus.backgroundColor = yellowcolor
-    }
-    
-    func configureBlueButtons() {
-        let bluecolor = UIColor(red: 0.20, green: 0.60, blue: 0.86, alpha: 1.00)
-        
-        buttonOne.backgroundColor = bluecolor
-        buttonTwo.backgroundColor =  bluecolor
-        buttonThree.backgroundColor = bluecolor
-        buttonFour.backgroundColor = bluecolor
-        buttonFive.backgroundColor = bluecolor
-        buttonSix.backgroundColor =  bluecolor
-        buttonSeven.backgroundColor =  bluecolor
-        buttonEight.backgroundColor  = bluecolor
-        buttonNine.backgroundColor = bluecolor
-        buttonZero.backgroundColor = bluecolor
-        buttonPeriod.backgroundColor = bluecolor
-        
-    }
-    
 }
 
 
