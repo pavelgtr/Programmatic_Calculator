@@ -1,0 +1,120 @@
+
+
+import UIKit
+
+class CalculatorView: UIViewController {
+    
+    let resultLabel = UILabel()
+    let backgroundContainer = UIView()
+    let labelContainer = UIView()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        configurelabelContainer()
+        configureLabel()
+        configureMainView()
+        
+        
+        let stackView1 = createsStackViewFourButtons(buttonText1: "C", buttonText2: "+/-", buttonText3: "%", buttonText4: "÷")
+        view.addSubview(stackView1)
+
+        stackViewOneLayout(view: view, stackView: stackView1, top: labelContainer.bottomAnchor, topConstant: 0, bottom: nil, bottomConstant: nil)
+        
+    }
+    
+    func stackViewOneLayout(view: UIView, stackView: UIStackView, top: NSLayoutYAxisAnchor, topConstant: CGFloat, bottom: NSLayoutYAxisAnchor?, bottomConstant: CGFloat?) {
+        
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: top, constant: topConstant),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.10)
+        ])
+    }
+
+    
+    
+    //MARK: - UILabel Setup
+    
+    func configureLabel() {
+        labelContainer.addSubview(resultLabel)
+        resultLabel.backgroundColor = .white
+        
+        resultLabel.translatesAutoresizingMaskIntoConstraints = false
+        resultLabel.text = "0"
+        resultLabel.textColor = .black
+        resultLabel.font = .boldSystemFont(ofSize: 40)
+        resultLabel.textAlignment = .right
+        
+        resultLabel.topAnchor.constraint(equalTo: labelContainer.topAnchor, constant: 30).isActive = true
+        resultLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor, constant: 20).isActive = true
+        resultLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor, constant: -20).isActive = true
+        resultLabel.heightAnchor.constraint(equalTo: labelContainer.heightAnchor, multiplier: 0.75).isActive = true
+    }
+    
+    //MARK: - configure main View
+    
+    func configureMainView() {
+        view.addSubview(backgroundContainer)
+        backgroundContainer.backgroundColor = .darkGray
+        backgroundContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            backgroundContainer.topAnchor.constraint(equalToSystemSpacingBelow: resultLabel.bottomAnchor, multiplier: 1),
+            backgroundContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            backgroundContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            backgroundContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0)
+        ])
+    }
+    
+    //MARK: - config label container
+    
+    func configurelabelContainer() {
+        
+        view.addSubview(labelContainer)
+        labelContainer.backgroundColor = .white
+        labelContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        labelContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
+        labelContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0).isActive = true
+        labelContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0).isActive = true
+        labelContainer.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.25).isActive = true
+    }
+    
+    //MARK: - func to automate stack view
+    
+    func createsStackViewFourButtons(buttonText1: String, buttonText2: String, buttonText3: String, buttonText4: String) -> UIStackView {
+        let stackView = UIStackView()
+        //Stack view properties
+        stackView.axis = .horizontal
+        stackView.spacing = 1
+        stackView.alignment = .fill
+        stackView.distribution = .fillProportionally
+        //create four buttons
+        let button1 = UIButton()
+        let button2 = UIButton()
+        let button3 = UIButton()
+        let button4 = UIButton()
+        
+        button1.setTitle(buttonText1, for: .normal)
+        button2.setTitle(buttonText2, for: .normal)
+        button3.setTitle(buttonText3, for: .normal)
+        button4.setTitle(buttonText4, for: .normal)
+        
+        // Set the background color for each button
+        button1.backgroundColor = .systemBlue
+        button2.backgroundColor = .systemBlue
+        button3.backgroundColor = .systemBlue
+        button4.backgroundColor = .systemBlue
+        
+        stackView.addArrangedSubview(button1)
+        stackView.addArrangedSubview(button2)
+        stackView.addArrangedSubview(button3)
+        stackView.addArrangedSubview(button4)
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }
+   
+}

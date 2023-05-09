@@ -1,0 +1,38 @@
+
+
+        
+        let label = UILabel()
+        let button = UIButton()
+
+        override func viewDidLoad() {
+            super.viewDidLoad()
+            
+            label.text = "Example Text"
+            label.backgroundColor = .yellow
+            button.setTitle("Press", for: .normal)
+            button.backgroundColor = .blue
+            
+            view.addSubview(label)
+            view.addSubview(button)
+            
+            label.translatesAutoresizingMaskIntoConstraints = false
+            button.translatesAutoresizingMaskIntoConstraints = false
+            
+            // Setting content-hugging priority
+            label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+            button.setContentHuggingPriority(.defaultLow, for: .horizontal)
+            
+            // Setting compression-resistance priority
+            label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            button.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+            
+            // Layout constraints
+            NSLayoutConstraint.activate([
+                label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+                label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+                
+                button.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 20),
+                button.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+                button.centerYAnchor.constraint(equalTo: label.centerYAnchor)
+            ])
+    }

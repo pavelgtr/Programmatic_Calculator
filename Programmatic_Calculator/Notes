@@ -1,0 +1,71 @@
+
+
+//import UIKit
+//
+//class CalculatorView: UIViewController {
+//
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//
+//        view.backgroundColor = .white
+//
+//        let topLabel = UILabel()
+//        topLabel.text = "Chat with us"
+//        topLabel.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+//        view.addSubview(topLabel)
+//        topLabel.translatesAutoresizingMaskIntoConstraints = false
+//        topLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        topLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40).isActive = true
+//
+//        let messageLabel = UILabel()
+//        messageLabel.text = "Leave us a message"
+//        messageLabel.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+//        messageLabel.textColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0)
+//        view.addSubview(messageLabel)
+//        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+//        messageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        messageLabel.topAnchor.constraint(equalTo: topLabel.bottomAnchor, constant: 10).isActive = true
+//
+//        let inputTextView = UITextView()
+//        inputTextView.layer.borderWidth = 1.0
+//        inputTextView.layer.borderColor = UIColor(red: 0.6, green: 0.6, blue: 0.6, alpha: 1.0).cgColor
+//        inputTextView.layer.cornerRadius = 5.0
+//        inputTextView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+//        inputTextView.textContainerInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+//        view.addSubview(inputTextView)
+//        inputTextView.translatesAutoresizingMaskIntoConstraints = false
+//        inputTextView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+//        inputTextView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+//        inputTextView.topAnchor.constraint(equalTo: messageLabel.bottomAnchor, constant: 20).isActive = true
+//        inputTextView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+//
+//        let sendButton = UIButton(type: .system)
+//        sendButton.setTitle("SEND", for: .normal)
+//        sendButton.titleLabel?.font = UIFont.systemFont(ofSize: 20, weight: .semibold)
+//        sendButton.setTitleColor(.white, for: .normal)
+//        sendButton.backgroundColor = UIColor(red: 0.0, green: 0.4, blue: 1.0, alpha: 1.0)
+//        sendButton.layer.cornerRadius = 5.0
+//        view.addSubview(sendButton)
+//        sendButton.translatesAutoresizingMaskIntoConstraints = false
+//        sendButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+//        sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+//        sendButton.topAnchor.constraint(equalTo: inputTextView.bottomAnchor, constant: 20).isActive = true
+//        sendButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+//    }
+//}
+
+
+MARK - more code leftovers
+
+
+
+//        cLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
+//        cLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+//        cLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -285).isActive = true
+//        cLabel.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.10).isActive = true
+////        cLabel.bottomAnchor.constraint(equalTo: seven.topAnchor, constant: -8).isActive = true
+//
+//        seven.topAnchor.constraint(equalTo: cLabel.bottomAnchor, constant: 20).isActive = true
+//        seven.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+//        seven.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20).isActive = true
+//        seven.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -300).isActive = true

@@ -1,0 +1,97 @@
+
+
+import UIKit
+
+class CalculatorView: UIViewController {
+    
+    let displayLabel = UILabel()
+    let displayLabelView = UIView()
+    
+    let cLabel = UILabel()
+    let horizontalStack1 = UIStackView()
+    
+    let button1 = UIButton()
+    let button2 = UIButton()
+    let button3 = UIButton()
+    let button4 = UIButton()
+    
+
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let stackView2 = createStackViewWithButtons()
+        view.addSubview(stackView2)
+        
+        displayLabel.text = "0"
+        displayLabel.textColor = .white
+        displayLabel.textAlignment = .right
+        displayLabel.font = .boldSystemFont(ofSize: 45)
+        
+        button1.backgroundColor = .blue
+        button2.backgroundColor = .blue
+        button3.backgroundColor = .blue
+        button4.backgroundColor = .blue
+        
+        horizontalStack1.axis = .horizontal
+        horizontalStack1.spacing = 1
+        horizontalStack1.alignment = .fill
+        horizontalStack1.distribution = .fillEqually
+        
+        //MARK: - addsubviews
+        
+        view.addSubview(displayLabelView)
+        view.addSubview(horizontalStack1)
+        displayLabelView.addSubview(displayLabel)
+        displayLabelView.backgroundColor = .red
+        
+        horizontalStack1.addArrangedSubview(button1)
+        horizontalStack1.addArrangedSubview(button2)
+        horizontalStack1.addArrangedSubview(button3)
+        horizontalStack1.addArrangedSubview(button4)
+        
+        displayLabel.translatesAutoresizingMaskIntoConstraints = false
+        horizontalStack1.translatesAutoresizingMaskIntoConstraints = false
+        displayLabelView.translatesAutoresizingMaskIntoConstraints = false
+        
+        displayLabel.backgroundColor = .clear
+        
+        displayLabelView.topAnchor.constraint(equalToSystemSpacingBelow: view.safeAreaLayoutGuide.topAnchor, multiplier: 0).isActive = true
+        displayLabelView.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 0).isActive = true
+        displayLabelView.trailingAnchor.constraint(equalToSystemSpacingAfter: view.trailingAnchor, multiplier: 0).isActive = true
+        displayLabelView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.15).isActive = true
+        
+        displayLabel.topAnchor.constraint(equalToSystemSpacingBelow: displayLabelView.topAnchor, multiplier: 2).isActive = true
+        displayLabel.leadingAnchor.constraint(equalToSystemSpacingAfter: displayLabelView.leadingAnchor, multiplier: 1).isActive = true
+        displayLabel.trailingAnchor.constraint(equalTo: displayLabelView.trailingAnchor, constant: -20).isActive = true
+        displayLabel.bottomAnchor.constraint(equalTo: displayLabelView.bottomAnchor, constant: -25).isActive = true
+        
+        horizontalStack1.topAnchor.constraint(equalToSystemSpacingBelow: displayLabelView.bottomAnchor, multiplier: 1).isActive = true
+        horizontalStack1.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 0).isActive = true
+        horizontalStack1.trailingAnchor.constraint(equalToSystemSpacingAfter: view.trailingAnchor, multiplier: 0).isActive = true
+        horizontalStack1.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1).isActive = true
+        
+        stackView2.topAnchor.constraint(equalToSystemSpacingBelow: horizontalStack1.bottomAnchor, multiplier: 1).isActive = true
+        stackView2.leadingAnchor.constraint(equalToSystemSpacingAfter: view.leadingAnchor, multiplier: 0).isActive = true
+        stackView2.trailingAnchor.constraint(equalToSystemSpacingAfter: view.trailingAnchor, multiplier: 0).isActive = true
+        stackView2.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.1).isActive = true
+    }
+    
+    func createStackViewWithButtons() -> UIStackView {
+        let stackView = UIStackView()
+        stackView.axis = .horizontal
+        stackView.spacing = 1
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        
+        for _ in 0..<4 {  //adds four buttons
+            let button = UIButton()
+            button.backgroundColor = .blue
+            stackView.addArrangedSubview(button)
+        }
+        
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }
+   
+}
