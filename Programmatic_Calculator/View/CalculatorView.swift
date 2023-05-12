@@ -5,6 +5,9 @@ class CalculatorView: UIViewController {
     
     //MARK: - declare variables
     
+    var calculatorLogic = CalculatorLogic()
+    var isDoneTypingNumber = true //determines behavior of calculator functions
+    
     let displayLabel = UILabel() //displays calculator result
     let  labelContainer = UIView() //UIView for result
     
@@ -20,7 +23,7 @@ class CalculatorView: UIViewController {
         }
     }
     
-    var isDoneTypingNumber = true
+    //MARK: - declare programmatic UI elements 
     
     //declare Stack views
     let topStackView = UIStackView()
@@ -30,7 +33,7 @@ class CalculatorView: UIViewController {
     let bottomStackView = UIStackView()
     let smallBottomLeft = UIStackView()
     let smallBottomRight = UIStackView()
-
+    
     //DELETED BUTTON DECLARATIONS HERE. JUST MAKING A NOTE. WILL USE BUTTONS STRUCT
     
     //declare button size
@@ -39,6 +42,9 @@ class CalculatorView: UIViewController {
     //declare button colors
     let Orangecolor = UIColor(red: 1.00, green: 0.58, blue: 0.00, alpha: 1.00)
     let bluecolor = UIColor(red: 0.20, green: 0.60, blue: 0.86, alpha: 1.00)
+    
+    
+    //MARK: - viewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,8 +58,64 @@ class CalculatorView: UIViewController {
         configureDisplay()
     }
     
-   //MARK: - configure stacks
+    //MARK: - calculator functions
     
+    @objc func calcButtonPressed(_ sender: UIButton) {
+        print("Calculation button pressed")
+        isDoneTypingNumber = true
+        
+        calculatorLogic.setNumber(displayValue)
+
+        if let symbolString = sender.currentTitle {
+
+            if let result = calculatorLogic.calculate(symbolString: symbolString) {
+                displayValue = result
+            }
+        }
+    }
+    
+    @objc func numButtonPressed(_ sender: UIButton) {
+        print("Number button pressed")
+        guard let currentUserInput = sender.currentTitle else { //safely unwrap and assign new constant for user input, called num
+            fatalError("num has no value")
+        }
+        
+        if isDoneTypingNumber {
+            if sender.currentTitle == "." { //if the first key the user presses is ".", then will automatically change value to "0." If user input is not ".", then simply go the next block
+                displayLabel.text = "0."
+                isDoneTypingNumber = false
+            } else { //next, we'll append whatever num the user presses and immediately make isDoneTypingNumber FALSE, so we can move on to the next block (see below)
+                displayLabel.text! = currentUserInput
+                isDoneTypingNumber = false
+            }
+        } else {  // NEXT BLOCK
+            if currentUserInput == "." {
+                let isInt = floor(displayValue) == displayValue
+                if !isInt {
+                    return
+                }
+            }
+            displayLabel.text = (displayLabel.text ?? "0.0") + currentUserInput
+        }
+    }
+    
+    // add targets to calculation buttons
+    func addTargetToCalcButtons() {
+        let calcButtonCollection: [UIButton] = [Buttons.buttonClear, Buttons.buttonMultiply, Buttons.buttonNegativePostive, Buttons.buttonPercent, Buttons.buttonDivision, Buttons.buttonPlus, Buttons.buttonMinus, Buttons.buttonEqual]
+        for button in calcButtonCollection {
+            button.addTarget(self, action: #selector(calcButtonPressed(_:)), for: .touchUpInside)
+        }
+    }
+    
+    // add targets to number buttons
+    func addTargetToNumButtons() {
+        let numButtonCollection : [UIButton] = [Buttons.buttonPeriod, Buttons.buttonZero, Buttons.buttonOne, Buttons.buttonTwo, Buttons.buttonThree, Buttons.buttonFour, Buttons.buttonFive, Buttons.buttonSix, Buttons.buttonSeven, Buttons.buttonEight, Buttons.buttonNine]
+        for button in numButtonCollection {
+            button.addTarget(self, action: #selector(numButtonPressed(_:)), for: .touchUpInside)
+        }
+    }
+    //MARK: - configure stacks
+    //configure top and bottom stacks with unique configurations
     func groupStackConfiguration() {
         configureBottomStackView() //bottom stack view is slight different than the others, hence unique configuration func
         //configure rest of stack views
@@ -118,20 +180,23 @@ class CalculatorView: UIViewController {
         button.layer.cornerRadius = 30
         button.backgroundColor = buttonColor
         stackView.addArrangedSubview(button)
-        addTargetToCalcButtons()
-        addTargetToNumButtons()
+        if let title = button.currentTitle, ["A/C", "%", "+/-", "÷", "x", "+", "-", "="].contains(title) {
+                   button.addTarget(self, action: #selector(calcButtonPressed(_:)), for: .touchUpInside)
+               } else {
+                   button.addTarget(self, action: #selector(numButtonPressed(_:)), for: .touchUpInside)
+               }
     }
     
     func groupButtons() {
         let blue = Buttons.bluecolor
         let orange = Buttons.Orangecolor
         let white: UIColor = .white
-
+        
         let buttonConfigs = [
             //top row
             (Buttons.buttonClear, "A/C", topStackView, white),
-            (Buttons.buttonNegativePostive, "%", topStackView, white),
-            (Buttons.buttonPercent, "+/-", topStackView, white),
+            (Buttons.buttonNegativePostive, "+/-", topStackView, white),
+            (Buttons.buttonPercent, "%", topStackView, white),
             (Buttons.buttonDivision, "÷", topStackView, orange),
             //2nd row
             (Buttons.buttonSeven, "7", secondStackView, blue),
@@ -148,48 +213,48 @@ class CalculatorView: UIViewController {
             (Buttons.buttonThree, "3", fourthStackView, blue),
             (Buttons.buttonOne, "1", fourthStackView, blue),
             (Buttons.buttonPlus, "+", fourthStackView, orange),
-            //bottom row 
+            //bottom row
             (Buttons.buttonZero, "0", smallBottomLeft, blue),
             (Buttons.buttonPeriod, ".", smallBottomRight, blue),
             (Buttons.buttonEqual, "=", smallBottomRight, orange)
         ]
-
+        
         for config in buttonConfigs {
             configureButton(config.0, title: config.1, stackView: config.2, buttonColor: config.3)
         }
     }
-
+    
     //MARK: - configure label and its parent view
     
     func configureDisplayContainer() {
-          view.addSubview(labelContainer)
-          
-          labelContainer.translatesAutoresizingMaskIntoConstraints = false
-          
-          NSLayoutConstraint.activate([
-              labelContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
-              labelContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-              labelContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-              labelContainer.bottomAnchor.constraint(equalTo: topStackView.topAnchor, constant: -1)
-          ])
-          labelContainer.backgroundColor = .clear
-      }
-      
-      func configureDisplay() {
-          labelContainer.addSubview(displayLabel)
-          displayLabel.translatesAutoresizingMaskIntoConstraints = false
-          displayLabel.centerXAnchor.constraint(equalTo: labelContainer.centerXAnchor, constant: 0).isActive = true
-          displayLabel.centerYAnchor.constraint(equalTo: labelContainer.centerYAnchor, constant: 0).isActive = true
-          displayLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor, constant: 20).isActive = true
-          displayLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor, constant: -20).isActive = true
-          
-          
-          displayLabel.text = "0"
-          displayLabel.textColor = .white
-          displayLabel.font = .boldSystemFont(ofSize: 50)
-          displayLabel.textAlignment = .right
-      }
-  }
+        view.addSubview(labelContainer)
+        
+        labelContainer.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            labelContainer.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            labelContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            labelContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            labelContainer.bottomAnchor.constraint(equalTo: topStackView.topAnchor, constant: -1)
+        ])
+        labelContainer.backgroundColor = .clear
+    }
+    
+    func configureDisplay() {
+        labelContainer.addSubview(displayLabel)
+        displayLabel.translatesAutoresizingMaskIntoConstraints = false
+        displayLabel.centerXAnchor.constraint(equalTo: labelContainer.centerXAnchor, constant: 0).isActive = true
+        displayLabel.centerYAnchor.constraint(equalTo: labelContainer.centerYAnchor, constant: 0).isActive = true
+        displayLabel.leadingAnchor.constraint(equalTo: labelContainer.leadingAnchor, constant: 20).isActive = true
+        displayLabel.trailingAnchor.constraint(equalTo: labelContainer.trailingAnchor, constant: -20).isActive = true
+        
+        
+        displayLabel.text = "0"
+        displayLabel.textColor = .white
+        displayLabel.font = .boldSystemFont(ofSize: 50)
+        displayLabel.textAlignment = .right
+    }
+}
 
 
 

@@ -1,9 +1,6 @@
 import UIKit
 
 extension CalculatorView {
-    // declare functionality of buttons
-    
-
-    
+    // OBSOLETE FOR NOW
 
 }
