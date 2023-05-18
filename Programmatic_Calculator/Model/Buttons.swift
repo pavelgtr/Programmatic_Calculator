@@ -24,11 +24,6 @@ struct Buttons {
     static let buttonEight = UIButton()
     static let buttonNine = UIButton()
     
-    //declare button size
+    //button size
     static let buttonSize = 0.14
-
-    //declare button colors
-    static let Orangecolor = UIColor(red: 1.00, green: 0.58, blue: 0.00, alpha: 1.00)
-    static let bluecolor = UIColor(red: 0.20, green: 0.60, blue: 0.86, alpha: 1.00)
-    
 }

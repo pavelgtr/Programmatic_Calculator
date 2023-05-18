@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4744604E2A1668B9007BEC98 /* CalculatorOperationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4744604D2A1668B9007BEC98 /* CalculatorOperationVC.swift */; };
+		474460502A168440007BEC98 /* Extension_Operations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4744604F2A168440007BEC98 /* Extension_Operations.swift */; };
 		476E37332A0B1AC700EDA252 /* Ext-CalcView-Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476E37322A0B1AC700EDA252 /* Ext-CalcView-Functions.swift */; };
 		476E373A2A0BF2E300EDA252 /* Buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476E37392A0BF2E300EDA252 /* Buttons.swift */; };
 		476E373C2A0BF79C00EDA252 /* Stacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476E373B2A0BF79C00EDA252 /* Stacks.swift */; };
@@ -23,6 +25,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4744604D2A1668B9007BEC98 /* CalculatorOperationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorOperationVC.swift; sourceTree = "<group>"; };
+		4744604F2A168440007BEC98 /* Extension_Operations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension_Operations.swift; sourceTree = "<group>"; };
 		476E37322A0B1AC700EDA252 /* Ext-CalcView-Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Ext-CalcView-Functions.swift"; sourceTree = "<group>"; };
 		476E37392A0BF2E300EDA252 /* Buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buttons.swift; sourceTree = "<group>"; };
 		476E373B2A0BF79C00EDA252 /* Stacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stacks.swift; sourceTree = "<group>"; };
@@ -72,6 +76,7 @@
 			isa = PBXGroup;
 			children = (
 				47A710AF2A07D3A000F806C3 /* CalculatorView.swift */,
+				4744604F2A168440007BEC98 /* Extension_Operations.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -79,6 +84,7 @@
 		476E37382A0B1B8000EDA252 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				4744604D2A1668B9007BEC98 /* CalculatorOperationVC.swift */,
 				476E373D2A0C1C1900EDA252 /* CalculatorLogic.swift */,
 			);
 			path = Controller;
@@ -196,9 +202,11 @@
 			files = (
 				476E373C2A0BF79C00EDA252 /* Stacks.swift in Sources */,
 				476E373A2A0BF2E300EDA252 /* Buttons.swift in Sources */,
+				474460502A168440007BEC98 /* Extension_Operations.swift in Sources */,
 				47A7109C2A07D2F600F806C3 /* AppDelegate.swift in Sources */,
 				476E373E2A0C1C1900EDA252 /* CalculatorLogic.swift in Sources */,
 				47A710B02A07D3A000F806C3 /* CalculatorView.swift in Sources */,
+				4744604E2A1668B9007BEC98 /* CalculatorOperationVC.swift in Sources */,
 				47A7109E2A07D2F600F806C3 /* SceneDelegate.swift in Sources */,
 				476E37332A0B1AC700EDA252 /* Ext-CalcView-Functions.swift in Sources */,
 			);

@@ -3,29 +3,25 @@ import UIKit
 
 class CalculatorView: UIViewController {
     
-    //MARK: - declare variables
-    
     var calculatorLogic = CalculatorLogic()
-    var isDoneTypingNumber = true //determines behavior of calculator functions
+    var isDoneTypingNumber = true //helps with behavior of calculator functions
     
     let displayLabel = UILabel() //displays calculator result
-    let  labelContainer = UIView() //UIView for result
-    
-    //configure display value into Double type
-    var displayValue: Double {
+    let labelContainer = UIView() //UIView for result
+   
+    var displayValue: Double { //configure display value into Double type
         get {
             guard let number = Double(displayLabel.text!) else {
                 fatalError("cannot convert display label to double")
             }
             return number
         } set {
-            displayLabel.text = floor(newValue) == newValue ? String(Int(newValue)) : String(newValue) //changing to Int if value ends in .0
+            displayLabel.text = floor(newValue) == newValue ? String(Int(newValue)) : String(newValue) //changing double to Int if value ends in .0
         }
     }
     
-    //MARK: - declare programmatic UI elements 
+    //MARK: - declare Stacks
     
-    //declare Stack views
     let topStackView = UIStackView()
     let secondStackView = UIStackView()
     let thirdStackView = UIStackView()
@@ -34,98 +30,30 @@ class CalculatorView: UIViewController {
     let smallBottomLeft = UIStackView()
     let smallBottomRight = UIStackView()
     
-    //DELETED BUTTON DECLARATIONS HERE. JUST MAKING A NOTE. WILL USE BUTTONS STRUCT
-    
-    //declare button size
-    let buttonSize = 0.14
-    
-    //declare button colors
-    let Orangecolor = UIColor(red: 1.00, green: 0.58, blue: 0.00, alpha: 1.00)
-    let bluecolor = UIColor(red: 0.20, green: 0.60, blue: 0.86, alpha: 1.00)
-    
-    
     //MARK: - viewDidLoad
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        groupStackConfiguration()
-        //configure buttons
+        groupStacks()
         groupButtons()
-        
-        //configure label container and display
         configureDisplayContainer()
         configureDisplay()
-    }
-    
-    //MARK: - calculator functions
-    
-    @objc func calcButtonPressed(_ sender: UIButton) {
-        print("Calculation button pressed")
-        isDoneTypingNumber = true
         
-        calculatorLogic.setNumber(displayValue)
-
-        if let symbolString = sender.currentTitle {
-
-            if let result = calculatorLogic.calculate(symbolString: symbolString) {
-                displayValue = result
-            }
-        }
     }
     
-    @objc func numButtonPressed(_ sender: UIButton) {
-        print("Number button pressed")
-        guard let currentUserInput = sender.currentTitle else { //safely unwrap and assign new constant for user input, called num
-            fatalError("num has no value")
-        }
-        
-        if isDoneTypingNumber {
-            if sender.currentTitle == "." { //if the first key the user presses is ".", then will automatically change value to "0." If user input is not ".", then simply go the next block
-                displayLabel.text = "0."
-                isDoneTypingNumber = false
-            } else { //next, we'll append whatever num the user presses and immediately make isDoneTypingNumber FALSE, so we can move on to the next block (see below)
-                displayLabel.text! = currentUserInput
-                isDoneTypingNumber = false
-            }
-        } else {  // NEXT BLOCK
-            if currentUserInput == "." {
-                let isInt = floor(displayValue) == displayValue
-                if !isInt {
-                    return
-                }
-            }
-            displayLabel.text = (displayLabel.text ?? "0.0") + currentUserInput
-        }
-    }
-    
-    // add targets to calculation buttons
-    func addTargetToCalcButtons() {
-        let calcButtonCollection: [UIButton] = [Buttons.buttonClear, Buttons.buttonMultiply, Buttons.buttonNegativePostive, Buttons.buttonPercent, Buttons.buttonDivision, Buttons.buttonPlus, Buttons.buttonMinus, Buttons.buttonEqual]
-        for button in calcButtonCollection {
-            button.addTarget(self, action: #selector(calcButtonPressed(_:)), for: .touchUpInside)
-        }
-    }
-    
-    // add targets to number buttons
-    func addTargetToNumButtons() {
-        let numButtonCollection : [UIButton] = [Buttons.buttonPeriod, Buttons.buttonZero, Buttons.buttonOne, Buttons.buttonTwo, Buttons.buttonThree, Buttons.buttonFour, Buttons.buttonFive, Buttons.buttonSix, Buttons.buttonSeven, Buttons.buttonEight, Buttons.buttonNine]
-        for button in numButtonCollection {
-            button.addTarget(self, action: #selector(numButtonPressed(_:)), for: .touchUpInside)
-        }
-    }
     //MARK: - configure stacks
-    //configure top and bottom stacks with unique configurations
-    func groupStackConfiguration() {
-        configureBottomStackView() //bottom stack view is slight different than the others, hence unique configuration func
-        //configure rest of stack views
-        createStackViews(stackView: fourthStackView, bottomAnchor: bottomStackView.topAnchor, bottomConstant: -1, heightMultiplier: Buttons.buttonSize)
-        createStackViews(stackView: thirdStackView, bottomAnchor: fourthStackView.topAnchor, bottomConstant: -1, heightMultiplier: Buttons.buttonSize)
-        createStackViews(stackView: secondStackView, bottomAnchor: thirdStackView.topAnchor, bottomConstant: -1, heightMultiplier: Buttons.buttonSize)
-        createStackViews(stackView: topStackView, bottomAnchor: secondStackView.topAnchor, bottomConstant: -1, heightMultiplier: Buttons.buttonSize)
+    //configure top and bottom stacks with unique configurations due to constraints
+    func groupStacks() {
+        configureBottomStackView() //bottom stack unique configuration
+        
+        createStackViews(name: fourthStackView, YAxisAnchor: bottomStackView.topAnchor, constant: -1, heightMultiplier: Buttons.buttonSize)
+        createStackViews(name: thirdStackView, YAxisAnchor: fourthStackView.topAnchor, constant: -1, heightMultiplier: Buttons.buttonSize)
+        createStackViews(name: secondStackView, YAxisAnchor: thirdStackView.topAnchor, constant: -1, heightMultiplier: Buttons.buttonSize)
+        createStackViews(name: topStackView, YAxisAnchor: secondStackView.topAnchor, constant: -1, heightMultiplier: Buttons.buttonSize)
     }
     
-    func configureBottomStackView() { //this stack has unique configuration compared to the rest (ie func createStackViews() )
+    func configureBottomStackView() { //this stack has unique configuration compared to the rest (ie func createStackViews()
         view.addSubview(bottomStackView)
         bottomStackView.translatesAutoresizingMaskIntoConstraints = false
         bottomStackView.axis = .horizontal
@@ -142,7 +70,6 @@ class CalculatorView: UIViewController {
         smallBottomRight.spacing = 1
         
         NSLayoutConstraint.activate([
-            //            bottomStackView.topAnchor.constraint(equalTo: fourthStackView.bottomAnchor, constant: 5),
             bottomStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
             bottomStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
             bottomStackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: Buttons.buttonSize),
@@ -151,26 +78,26 @@ class CalculatorView: UIViewController {
     }
     
     //create and configure the rest of the stacks
-    func createStackViews(stackView: UIStackView, bottomAnchor: NSLayoutYAxisAnchor, bottomConstant: CGFloat, heightMultiplier: CGFloat) {
-        stackView.backgroundColor = .clear
-        stackView.axis = .horizontal
-        stackView.alignment = .fill
-        stackView.distribution = .fillEqually
-        stackView.spacing = 3
-        view.addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+    func createStackViews(name: UIStackView, YAxisAnchor: NSLayoutYAxisAnchor, constant: CGFloat, heightMultiplier: CGFloat) {
+        name.backgroundColor = .clear
+        name.axis = .horizontal
+        name.alignment = .fill
+        name.distribution = .fillEqually
+        name.spacing = 3
+        view.addSubview(name)
+        name.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: bottomConstant),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
-            stackView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: heightMultiplier)
+            name.bottomAnchor.constraint(equalTo: YAxisAnchor, constant: constant),
+            name.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0),
+            name.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: 0),
+            name.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: heightMultiplier)
         ])
     }
     
     //MARK: - button configuration
     
-    func configureButton(_ button: UIButton, title: String, stackView: UIStackView, buttonColor: UIColor) {
+    func configureButton(button: UIButton, title: String, stackView: UIStackView, buttonColor: UIColor) {
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle(title, for: .normal)
         button.setTitleColor(.black, for: .normal)
@@ -188,11 +115,12 @@ class CalculatorView: UIViewController {
     }
     
     func groupButtons() {
-        let blue = Buttons.bluecolor
-        let orange = Buttons.Orangecolor
+        //declare button colors
+        let blue = UIColor(red: 0.20, green: 0.60, blue: 0.86, alpha: 1.00)
+        let orange = UIColor(red: 1.00, green: 0.58, blue: 0.00, alpha: 1.00)
         let white: UIColor = .white
         
-        let buttonConfigs = [
+        let buttonArray = [
             //top row
             (Buttons.buttonClear, "A/C", topStackView, white),
             (Buttons.buttonNegativePostive, "+/-", topStackView, white),
@@ -219,12 +147,12 @@ class CalculatorView: UIViewController {
             (Buttons.buttonEqual, "=", smallBottomRight, orange)
         ]
         
-        for config in buttonConfigs {
-            configureButton(config.0, title: config.1, stackView: config.2, buttonColor: config.3)
+        for configuration in buttonArray {
+            configureButton(button: configuration.0, title: configuration.1, stackView: configuration.2, buttonColor: configuration.3)
         }
     }
     
-    //MARK: - configure label and its parent view
+    //MARK: - configure label and Parent view
     
     func configureDisplayContainer() {
         view.addSubview(labelContainer)
@@ -255,9 +183,3 @@ class CalculatorView: UIViewController {
         displayLabel.textAlignment = .right
     }
 }
-
-
-
-
-
-

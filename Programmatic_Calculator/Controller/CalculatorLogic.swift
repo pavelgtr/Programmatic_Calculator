@@ -29,10 +29,11 @@ struct CalculatorLogic {
             default:
                 if intermediateCalculation != nil {
                     let result = performTwoNumCalculation(n2: n)
-//                    displayValue = n NEed to improve this logic
                     intermediateCalculation = (n1: result!, calcMethod: symbolString)
+                    return result
                 } else {
-                    intermediateCalculation = (n1: n, calcMethod: symbolString)                }
+                    intermediateCalculation = (n1: n, calcMethod: symbolString)
+                }
             }
         }
         return nil
